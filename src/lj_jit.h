@@ -1,6 +1,6 @@
 /*
 ** Common definitions for the JIT compiler.
-** Copyright (C) 2005-2014 Mike Pall. See Copyright Notice in luajit.h
+** Copyright (C) 2005-2017 Mike Pall. See Copyright Notice in luajit.h
 */
 
 #ifndef _LJ_JIT_H
@@ -155,6 +155,12 @@ typedef uint8_t MCode;
 typedef uint32_t MCode;
 #endif
 
+/* Linked list of MCode areas. */
+typedef struct MCLink {
+  MCode *next;		/* Next area. */
+  size_t size;		/* Size of current area. */
+} MCLink;
+
 /* Stack snapshot header. */
 typedef struct SnapShot {
   uint16_t mapofs;	/* Offset into snapshot map. */
@@ -279,6 +285,7 @@ typedef struct BPropEntry {
 
 /* Scalar evolution analysis cache. */
 typedef struct ScEvEntry {
+  MRef pc;		/* Bytecode PC of FORI. */
   IRRef1 idx;		/* Index reference. */
   IRRef1 start;		/* Constant start reference. */
   IRRef1 stop;		/* Constant stop reference. */
